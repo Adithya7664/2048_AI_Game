@@ -1,10 +1,17 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sb3_contrib import MaskablePPO
 from explainer import explain, suggest
 import numpy as np
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 model = MaskablePPO.load("2048_ppo_masked")
 
 class BoardRequest(BaseModel):
