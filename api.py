@@ -29,6 +29,10 @@ def explain_all(req: BoardRequest):
     directions = ['left', 'up', 'right', 'down']
     return {d: explain(board, d) for d in directions}
 
+@app.get("/")
+def root():
+    return {"service": "2048 AI API", "endpoints": ["POST /suggest", "POST /explain", "GET /health"]}
+
 @app.get("/health")
 def health():
     return {"status": "ok"}

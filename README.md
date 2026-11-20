@@ -2,6 +2,8 @@
 
 A 2048 game written in Flutter, backed by a reinforcement-learning agent (Maskable PPO) served through FastAPI. The agent can play the game for you ("Watch AI") and the in-game tutor explains why a move is good or bad.
 
+Live API (free tier, the first request after idle takes about a minute to wake): https://two048-ai-game-1.onrender.com/health
+
 ## Results
 
 Benchmark over 100 seeded games (`python benchmark.py 100`), deterministic policy, same seeds for both players:
