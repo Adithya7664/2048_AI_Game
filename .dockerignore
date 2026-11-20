@@ -16,3 +16,14 @@ pubspec.lock
 analysis_options.yaml
 .metadata
 *.iml
+*.zip
+train.py
+evaluate.py
+evaluate_2.py
+benchmark.py
+environment.py
+export_weights.py
+verify_numpy_policy.py
+test.py
+test_explainer.py
+requirements-train.txt

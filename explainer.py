@@ -72,7 +72,8 @@ def explain(board, direction, agent_scores = None):
     
     return result
 
-def suggest(board, model):
+def suggest(board, policy):
+    """policy: NumpyPolicy (policy_numpy.py). Returns the explanation for the best move."""
     directions = ['left', 'up', 'right', 'down']
     obs = board.copy().astype(float)
     obs[obs > 0] = np.log2(obs[obs > 0])
@@ -81,23 +82,7 @@ def suggest(board, model):
     from analyzer import _board_after_move
     masks = np.array([_board_after_move(board, d)[1] for d in directions])
 
-    action, _ = model.predict(obs, action_masks=masks, deterministic=True)
-    best_dir = directions[int(action)]
-
-    import torch
-    with torch.no_grad():
-        obs_tensor = torch.tensor(obs).unsqueeze(0)
-        dist = model.policy.get_distribution(obs_tensor)
-        raw_probs = dist.distribution.probs.numpy()[0]
-
-        # apply masks — zero out invalid moves then renormalize
-        masked_probs = raw_probs * masks.astype(float)
-        total = masked_probs.sum()
-        if total > 0:
-            masked_probs = masked_probs / total
-
-    scores = {d: round(float(masked_probs[i]), 3) for i, d in enumerate(directions)}
-    explanation = explain(board, best_dir, agent_scores=scores)
-    return explanation
-
-
+    best_dir = directions[policy.predict(obs, masks)]
+    probs = policy.probs(obs, masks)
+    scores = {d: round(float(probs[i]), 3) for i, d in enumerate(directions)}
+    return explain(board, best_dir, agent_scores=scores)

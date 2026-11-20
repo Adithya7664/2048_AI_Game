@@ -1,6 +1,6 @@
 import numpy as np
 from explainer import explain, suggest
-from sb3_contrib import MaskablePPO
+from policy_numpy import NumpyPolicy
 
 board = np.array([
     [512,   0,   0,   0],
@@ -15,7 +15,7 @@ for d in ['left', 'up', 'right', 'down']:
     print(f"{d:6}: {result['explanation']}")
 
 print("\n=== Agent suggestion ===")
-model = MaskablePPO.load("2048_ppo_masked")
+model = NumpyPolicy("policy_weights.npz")
 result = suggest(board, model)
 print(f"Best move : {result['direction']}")
 print(f"Explanation: {result['explanation']}")

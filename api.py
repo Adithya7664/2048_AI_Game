@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from sb3_contrib import MaskablePPO
+from policy_numpy import NumpyPolicy
 from explainer import explain, suggest
 import numpy as np
 
@@ -12,7 +12,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-model = MaskablePPO.load("2048_ppo_masked")
+model = NumpyPolicy("policy_weights.npz")
 
 class BoardRequest(BaseModel):
     board: list[list[int]]
